@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "SKScanView.h"
 
 @interface ViewController ()
 
@@ -16,7 +17,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    SKScanView *view = [[SKScanView alloc]initWithFrame:CGRectMake(0, 0, 200, 200)];
+    view.wireframeBounds = CGRectMake(0, 0, 100, 100);
+    view.scanResult = ^(NSString *qrCode) {
+        NSLog(@"%@",qrCode);
+    };
+    [self.view addSubview:view];
 }
 
 

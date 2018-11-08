@@ -15,6 +15,9 @@
 		FEE703F22192BA8B005F181D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE703F12192BA8B005F181D /* main.m */; };
 		FEE703FC2192BA8B005F181D /* SKScanViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE703FB2192BA8B005F181D /* SKScanViewTests.m */; };
 		FEE704072192BA8B005F181D /* SKScanViewUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE704062192BA8B005F181D /* SKScanViewUITests.m */; };
+		FEFBF2362193D0F10069BBE8 /* SKScanView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFBF2352193D0F10069BBE8 /* SKScanView.m */; };
+		FEFBF2382193D6880069BBE8 /* SKScanWireframe.png in Resources */ = {isa = PBXBuildFile; fileRef = FEFBF2372193D6880069BBE8 /* SKScanWireframe.png */; };
+		FEFBF23A2193D6C70069BBE8 /* SKScanLine.png in Resources */ = {isa = PBXBuildFile; fileRef = FEFBF2392193D6C70069BBE8 /* SKScanLine.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +54,10 @@
 		FEE704022192BA8B005F181D /* SKScanViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SKScanViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEE704062192BA8B005F181D /* SKScanViewUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKScanViewUITests.m; sourceTree = "<group>"; };
 		FEE704082192BA8B005F181D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FEFBF2342193D0F10069BBE8 /* SKScanView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SKScanView.h; sourceTree = "<group>"; };
+		FEFBF2352193D0F10069BBE8 /* SKScanView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKScanView.m; sourceTree = "<group>"; };
+		FEFBF2372193D6880069BBE8 /* SKScanWireframe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SKScanWireframe.png; sourceTree = "<group>"; };
+		FEFBF2392193D6C70069BBE8 /* SKScanLine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SKScanLine.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +88,7 @@
 		FEE703D62192BA89005F181D = {
 			isa = PBXGroup;
 			children = (
+				FEFBF2332193D0D10069BBE8 /* Classes */,
 				FEE703E12192BA89005F181D /* SKScanView */,
 				FEE703FA2192BA8B005F181D /* SKScanViewTests */,
 				FEE704052192BA8B005F181D /* SKScanViewUITests */,
@@ -130,6 +138,17 @@
 				FEE704082192BA8B005F181D /* Info.plist */,
 			);
 			path = SKScanViewUITests;
+			sourceTree = "<group>";
+		};
+		FEFBF2332193D0D10069BBE8 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				FEFBF2342193D0F10069BBE8 /* SKScanView.h */,
+				FEFBF2352193D0F10069BBE8 /* SKScanView.m */,
+				FEFBF2372193D6880069BBE8 /* SKScanWireframe.png */,
+				FEFBF2392193D6C70069BBE8 /* SKScanLine.png */,
+			);
+			path = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,6 +254,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEFBF2382193D6880069BBE8 /* SKScanWireframe.png in Resources */,
+				FEFBF23A2193D6C70069BBE8 /* SKScanLine.png in Resources */,
 				FEE703EF2192BA8B005F181D /* LaunchScreen.storyboard in Resources */,
 				FEE703EC2192BA8B005F181D /* Assets.xcassets in Resources */,
 				FEE703EA2192BA89005F181D /* Main.storyboard in Resources */,
@@ -263,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FEE703E72192BA89005F181D /* ViewController.m in Sources */,
+				FEFBF2362193D0F10069BBE8 /* SKScanView.m in Sources */,
 				FEE703F22192BA8B005F181D /* main.m in Sources */,
 				FEE703E42192BA89005F181D /* AppDelegate.m in Sources */,
 			);
@@ -436,6 +458,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = LF9QD7QW56;
 				INFOPLIST_FILE = SKScanView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -456,6 +479,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = LF9QD7QW56;
 				INFOPLIST_FILE = SKScanView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

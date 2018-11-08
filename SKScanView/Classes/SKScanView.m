@@ -22,7 +22,12 @@
 @property (nonatomic, retain) UIImageView * line;//扫描线
 @property(strong,nonatomic)UIView *shadeView;
 @property (strong,nonatomic)AVCaptureSession *session;
-
+@property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
+@property (strong,nonatomic)AVCaptureDevice * device;
+@property (strong,nonatomic)AVCaptureMetadataOutput * output;
+@property (nonatomic,strong)UIView  *focusView;//聚焦视图
+@property(nonatomic,assign)CGFloat beginGestureScale;//记录开始的缩放比例
+@property(nonatomic,assign)CGFloat effectiveScale;//最后的缩放比例
 @end
 
 @implementation SKScanView
@@ -41,6 +46,8 @@
 }
 
 - (void)creatView {
+    self.effectiveScale = self.beginGestureScale = 1.0f;
+    
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     _imageView=[[UIImageView alloc]init];
     _imageView.center = CGPointMake(self.frame.size.width * .5, self.frame.size.height * .5);
@@ -59,9 +66,23 @@
     _shadeView.alpha = 0.3;
     [self addSubview:_shadeView];
     
+    //聚焦视图
+    _focusView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
+    _focusView.layer.borderWidth = 1.0;
+    _focusView.layer.borderColor =[UIColor greenColor].CGColor;
+    _focusView.backgroundColor = [UIColor clearColor];
+    [self addSubview:_focusView];
+    _focusView.hidden = YES;
+    
+    //点击对焦手势
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(focusGesture:)];
+    [self addGestureRecognizer:tapGesture];
+    
     [self realodFrame];
     [self start];
 }
+
+
 
 -(void)realodFrame{
     _imageView.bounds = _wireframeBounds;
@@ -107,15 +128,15 @@
     }
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         //获取摄像设备
-        AVCaptureDevice * device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        self.device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
         //创建输入流
-        AVCaptureDeviceInput * input = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
+        AVCaptureDeviceInput * input = [AVCaptureDeviceInput deviceInputWithDevice:self.device error:nil];
         //创建输出流
-        AVCaptureMetadataOutput * output = [[AVCaptureMetadataOutput alloc]init];
+        self.output = [[AVCaptureMetadataOutput alloc]init];
         //设置代理 在主线程里刷新
-        [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+        [self.output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
         //设置扫描区域，中心点反转，屏幕百分比
-        [output setRectOfInterest : CGRectMake(CGRectGetMinY(_imageView.frame)/self.frame.size.height, CGRectGetMinX(_imageView.frame)/self.frame.size.width, _imageView.frame.size.height/self.frame.size.height, _imageView.frame.size.width/self.frame.size.width)];
+        [self.output setRectOfInterest : CGRectMake(CGRectGetMinY(_imageView.frame)/self.frame.size.height, CGRectGetMinX(_imageView.frame)/self.frame.size.width, _imageView.frame.size.height/self.frame.size.height, _imageView.frame.size.width/self.frame.size.width)];
         
         //初始化链接对象
         _session = [[AVCaptureSession alloc] init];
@@ -123,16 +144,16 @@
         [_session setSessionPreset:AVCaptureSessionPresetHigh];
         
         [_session addInput:input];
-        [_session addOutput:output];
+        [_session addOutput:self.output];
         //设置扫码支持的编码格式(如下设置条形码和二维码兼容)
-        output.metadataObjectTypes=@[AVMetadataObjectTypeQRCode,AVMetadataObjectTypeEAN13Code,
+        self.output.metadataObjectTypes = @[AVMetadataObjectTypeQRCode,AVMetadataObjectTypeEAN13Code,
                                      AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code];
         
-        AVCaptureVideoPreviewLayer * layer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
-        layer.videoGravity=AVLayerVideoGravityResizeAspectFill;
-        layer.frame = self.layer.bounds;
-        [self.layer insertSublayer:layer atIndex:0];
-        
+        self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
+        self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        self.previewLayer.frame = self.layer.bounds;
+//        [self.layer insertSublayer:[[self.layer sublayers] atIndex:0];
+        [self.layer insertSublayer:self.previewLayer below:[[self.layer sublayers] objectAtIndex:0]];
         //开始捕获
         [_session startRunning];
     }else{
@@ -140,6 +161,45 @@
         checkCamera();
     }
 }
+
+#pragma mark - 相机操作相关
+- (void)focusGesture:(UITapGestureRecognizer*)gesture{
+    CGPoint point = [gesture locationInView:gesture.view];
+    [self focusAtPoint:point];
+}
+
+- (void)focusAtPoint:(CGPoint)point{
+    CGSize size = self.bounds.size;
+    CGPoint focusPoint = CGPointMake( point.y /size.height ,1-point.x/size.width );
+    NSError *error;
+    if ([self.device lockForConfiguration:&error]) {
+        
+        if ([self.device isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {
+            [self.device setFocusPointOfInterest:focusPoint];
+            [self.device setFocusMode:AVCaptureFocusModeAutoFocus];
+        }
+        
+        if ([self.device isExposureModeSupported:AVCaptureExposureModeAutoExpose ]) {
+            [self.device setExposurePointOfInterest:focusPoint];
+            [self.device setExposureMode:AVCaptureExposureModeAutoExpose];
+        }
+        
+        [self.device unlockForConfiguration];
+        _focusView.center = point;
+        _focusView.hidden = NO;
+        typeof(self) __weak weakSelf = self;
+        [UIView animateWithDuration:0.3 animations:^{
+            weakSelf.focusView.transform = CGAffineTransformMakeScale(1.25, 1.25);
+        }completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.5 animations:^{
+                weakSelf.focusView.transform = CGAffineTransformIdentity;
+            } completion:^(BOOL finished) {
+                weakSelf.focusView.hidden = YES;
+            }];
+        }];
+    }
+}
+
 
 #pragma mark ---扫描结果后执行的操作-打开网页AVCaptureMetadataOutputObjectsDelegate ---
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{

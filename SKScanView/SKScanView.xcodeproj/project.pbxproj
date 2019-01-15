@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E582A1021EDDEE7005F5017 /* SweepVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E582A0F21EDDEE7005F5017 /* SweepVC.m */; };
 		FEE703E42192BA89005F181D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE703E32192BA89005F181D /* AppDelegate.m */; };
 		FEE703E72192BA89005F181D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE703E62192BA89005F181D /* ViewController.m */; };
 		FEE703EA2192BA89005F181D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FEE703E82192BA89005F181D /* Main.storyboard */; };
@@ -38,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0E582A0E21EDDEE7005F5017 /* SweepVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SweepVC.h; sourceTree = "<group>"; };
+		0E582A0F21EDDEE7005F5017 /* SweepVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SweepVC.m; sourceTree = "<group>"; };
 		FEE703DF2192BA89005F181D /* SKScanView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SKScanView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEE703E22192BA89005F181D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		FEE703E32192BA89005F181D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -143,6 +146,8 @@
 		FEFBF2332193D0D10069BBE8 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				0E582A0E21EDDEE7005F5017 /* SweepVC.h */,
+				0E582A0F21EDDEE7005F5017 /* SweepVC.m */,
 				FEFBF2342193D0F10069BBE8 /* SKScanView.h */,
 				FEFBF2352193D0F10069BBE8 /* SKScanView.m */,
 				FEFBF2372193D6880069BBE8 /* SKScanWireframe.png */,
@@ -284,6 +289,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FEE703E72192BA89005F181D /* ViewController.m in Sources */,
+				0E582A1021EDDEE7005F5017 /* SweepVC.m in Sources */,
 				FEFBF2362193D0F10069BBE8 /* SKScanView.m in Sources */,
 				FEE703F22192BA8B005F181D /* main.m in Sources */,
 				FEE703E42192BA89005F181D /* AppDelegate.m in Sources */,
